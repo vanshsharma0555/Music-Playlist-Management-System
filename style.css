@@ -1,32 +1,74 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: #121212;
+  background: #0b0f1a;
   color: white;
+  font-family: Arial;
+  text-align: center;
 }
 
-input {
-  padding: 10px;
-  width: 60%;
+.logo {
+  color: #9cff57;
+  margin-top: 20px;
+}
+
+.player-card {
+  width: 350px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 20px;
+  background: #151a2e;
+}
+
+.track-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.cover {
+  width: 60px;
+  height: 60px;
+  background: #2a2f45;
+  border-radius: 10px;
+}
+
+.controls {
+  margin-top: 20px;
 }
 
 button {
-  padding: 10px 20px;
-  margin-left: 10px;
+  padding: 10px;
+  margin: 5px;
   cursor: pointer;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
+.play {
+  background: #9cff57;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.add-card {
+  width: 350px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #151a2e;
+  border-radius: 20px;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+}
+
+.playlist {
+  width: 350px;
+  margin: auto;
 }
 
 li {
-  margin: 10px;
   cursor: pointer;
-  color: #00ffcc;
-}
-
-li:hover {
-  text-decoration: underline;
+  margin: 8px;
 }
