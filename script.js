@@ -1,33 +1,63 @@
-const playlist = [];
-const audioPlayer = document.getElementById("audioPlayer");
-const playlistUI = document.getElementById("playlist");
+let playlist = [];
+let currentIndex = 0;
 
-function addSong() {
-  const input = document.getElementById("songInput");
-  const song = input.value.trim();
+const audio = document.getElementById("audio");
+const title = document.getElementById("title");
+const artist = document.getElementById("artist");
+const list = document.getElementById("list");
 
-  if (!song) {
-    alert("Enter a valid song URL or path!");
+function addTrack() {
+  const name = document.getElementById("name").value;
+  const artistName = document.getElementById("artistInput").value;
+  const url = document.getElementById("url").value;
+
+  if (!url) {
+    alert("Audio URL required!");
     return;
   }
 
-  playlist.push(song);
+  const track = { name, artist: artistName, url };
+  playlist.push(track);
 
   const li = document.createElement("li");
-  li.textContent = song;
+  li.textContent = `${name} - ${artistName}`;
 
   li.onclick = () => {
-    playSong(song);
+    currentIndex = playlist.indexOf(track);
+    loadTrack();
+    audio.play();
   };
 
-  playlistUI.appendChild(li);
-  input.value = "";
+  list.appendChild(li);
 }
 
-function playSong(song) {
-  audioPlayer.src = song;
-  audioPlayer.play().catch(err => {
-    console.error("Playback failed:", err);
-    alert("Cannot play this audio. Check file path or format.");
-  });
+function loadTrack() {
+  const track = playlist[currentIndex];
+  audio.src = track.url;
+  title.textContent = track.name;
+  artist.textContent = track.artist;
+}
+
+function togglePlay() {
+  if (!audio.src) return;
+
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+}
+
+function next() {
+  if (playlist.length === 0) return;
+  currentIndex = (currentIndex + 1) % playlist.length;
+  loadTrack();
+  audio.play();
+}
+
+function prev() {
+  if (playlist.length === 0) return;
+  currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+  loadTrack();
+  audio.play();
 }
