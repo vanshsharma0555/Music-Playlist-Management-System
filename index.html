@@ -1,21 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Audio Playlist</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Wavelength Player</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0b0f1a;
+  color: white;
+  text-align: center;
+}
+
+h1 {
+  color: #9cff57;
+  margin-top: 20px;
+  letter-spacing: 3px;
+}
+
+.card {
+  width: 360px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 20px;
+  background: #151a2e;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.cover {
+  width: 60px;
+  height: 60px;
+  background: #2a2f45;
+  border-radius: 10px;
+}
+
+.controls button {
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.play {
+  background: #9cff57;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+}
+
+li {
+  cursor: pointer;
+  margin: 8px;
+}
+</style>
+
 </head>
 <body>
 
-<h1>🎧 My Playlist</h1>
+<h1>WAVELENGTH</h1>
 
-<input type="text" id="songInput" placeholder="Enter song URL or path">
-<button onclick="addSong()">Add Song</button>
+<div class="card">
+  <p>● NOW PLAYING</p>
 
-<ul id="playlist"></ul>
+  <div class="track">
+    <div class="cover"></div>
+    <div>
+      <h2 id="title">No Song</h2>
+      <p id="artist">---</p>
+    </div>
+  </div>
 
-<audio id="audioPlayer" controls></audio>
+  <audio id="audio" controls></audio>
 
-<script src="script.js"></script>
+  <div class="controls">
+    <button onclick="prev()">⏮</button>
+    <button class="play" onclick="togglePlay()">▶</button>
+    <button onclick="next()">⏭</button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>ADD A TRACK</h3>
+  <input id="name" placeholder="Song name">
+  <input id="artistInput" placeholder="Artist">
+  <input id="url" placeholder="Audio URL (.mp3)">
+  <button onclick="addTrack()">+ ADD</button>
+</div>
+
+<div class="card">
+  <h3>PLAYLIST</h3>
+  <ul id="list"></ul>
+</div>
+
+<script>
+let playlist = [];
+let currentIndex = 0;
+
+const audio = document.getElementById("audio");
+const title = document.getElementById("title");
+const artist = document.getElementById("artist");
+const list = document.getElementById("list");
+
+function addTrack() {
+  const name = document.getElementById("name").value;
+  const artistName = document.getElementById("artistInput").value;
+  const url = document.getElementById("url").value;
+
+  if (!url) {
+    alert("Enter audio URL!");
+    return;
+  }
+
+  const track = { name, artist: artistName, url };
+  playlist.push(track);
+
+  const li = document.createElement("li");
+  li.textContent = name + " - " + artistName;
+
+  li.onclick = () => {
+    currentIndex = playlist.indexOf(track);
+    loadTrack();
+    audio.play();
+  };
+
+  list.appendChild(li);
+}
+
+function loadTrack() {
+  const track = playlist[currentIndex];
+  audio.src = track.url;
+  title.textContent = track.name;
+  artist.textContent = track.artist;
+}
+
+function togglePlay() {
+  if (!audio.src) return;
+
+  if (audio.paused) audio.play();
+  else audio.pause();
+}
+
+function next() {
+  if (!playlist.length) return;
+  currentIndex = (currentIndex + 1) % playlist.length;
+  loadTrack();
+  audio.play();
+}
+
+function prev() {
+  if (!playlist.length) return;
+  currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+  loadTrack();
+  audio.play();
+}
+</script>
+
 </body>
 </html>
